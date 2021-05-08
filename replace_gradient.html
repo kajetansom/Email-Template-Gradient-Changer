@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta name="viewport" content="width=<device-width>, initial-scale=1.0"> -->
+    <title>Document</title>
+        <style>
+            * {
+                font-family: Helvetica, Verdana, sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .container {
+                padding: 0px 50px;
+                display: flex
+            }
+
+            .container div {
+                box-sizing: border-box;
+            }
+            .left {
+                width: 50%;
+            }
+            .middle {
+                padding: 45px 0px 0px 40px;
+            }
+            .right {
+                padding: 45px 40px 0px 25px;
+                width: 50%;
+            }
+            
+            .gradient_container {
+                display: flex;
+            }
+            .gradient {
+                width: 100%;
+                height: 200px;
+                position: relative;
+                border: 1px solid black;
+                margin-top: 20px;
+            }
+            .gradient:first-child {
+                margin-right: 20px;
+            }
+            .gradient .gradientText {
+                position: absolute;
+                color: white;
+                top: 20px;
+                left: 20px;
+                font-size: 20px;
+                filter: invert(1);
+                display: flex;
+                flex-direction: column;
+            }
+            .gradient .gradientText span {
+                font-size: 13px;
+                font-family: monospace
+            }
+            .gradient .gradientText span:first-child {
+                font-size: 20px
+            }
+            input[type='color'] {
+                width: 100%
+            }
+            textarea {
+                box-sizing: border-box;
+                width: 100%;
+                height: 80vh;
+                border: 1px solid #000000;
+                padding: 20px
+            }
+            h1 {
+                margin: 20px 0px 0px 50px;
+                font-weight: bold;
+                font-size: 20px;
+            }
+            h2 {
+                margin-top: 20px;
+                font-weight: bold;
+                font-size: 14px;
+                margin-bottom: 10px
+            }
+
+            .button_container {
+                display: flex;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            button {
+                color: rgba(0, 0, 0, 0.87);
+                box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+                background-color: #e0e0e0;
+                padding: 6px 16px;
+                font-size: 0.875rem;
+                min-width: 64px;
+                box-sizing: border-box;
+                transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+                font-weight: 500;
+                line-height: 1.75;
+                border-radius: 4px;
+                letter-spacing: 0.02857em;
+                text-transform: uppercase;
+                border: none;
+                cursor: pointer;
+                margin-bottom: 20px;
+            }
+
+            button:hover {
+                box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+                background-color: #d5d5d5;
+            }
+
+            .colors {
+                border: 1px solid #000;
+                padding: 20px 20px 10px;
+                margin-bottom: 20px;
+            }
+            .row {
+                display: flex;
+                margin-bottom: 10px
+            }
+            .row > div {
+                display: flex;
+                margin-right: 20px;
+                width: 100px;
+            }
+            .row > div span:first-child {
+                border: 1px solid #d5d5d5;
+                display: block;
+                width: 17px;
+                height: 17px;
+                margin-right: 5px;
+                border-radius: 50%;
+            }
+
+            .gradientImages {
+                display: flex;
+            }
+            canvas {
+                border: 1px solid black;
+                width: 20px;
+                box-sizing: border-box;
+            }
+            #gradientTop {
+                height: 450px;
+                align-self: flex-start;
+            }
+            #gradientMiddle {
+                height: 300px;
+                
+            }
+            #gradientBottom {
+                height: 150px;
+                align-self: flex-end;
+                transform: translateX(-100%);
+            }
+
+
+            /* color swap */
+            .color_box_container {
+                display: flex;
+            }
+            .swatch{
+                background: white;
+                box-shadow: 3px 3px 4px 0px rgb(0 0 0 / 10%);
+                display: flex;
+                flex-direction: column;
+                margin-right: 20px;
+            }
+
+            .swatch .info {
+                padding: 10px;
+            }
+
+            .swatch span.title {
+                display: block;
+                font-weight: bold;
+                font-size: 12px;
+                margin: 0;
+                text-transform: uppercase;
+            }
+
+            .swatch span.subtitle {
+                font-size: 10px;
+                display: block;
+                font-weight: normal;
+                margin: 0;
+            }
+
+            input[type="color"] {
+                border: 1px solid #dfdfdf;
+                appearance: none;
+                -moz-appearance: none;
+                -webkit-appearance: none;
+                background: none;
+                box-sizing:border-box;
+                cursor: pointer;
+                height: 50px;
+                padding: 0;
+                width: 100%;
+            }
+
+            *:focus{
+                border-radius: 0;
+                outline: none;
+            }
+
+            ::-webkit-color-swatch-wrapper {
+                padding: 0;
+            }
+
+            ::-webkit-color-swatch{
+                border: 0;
+                border-radius: 0;
+            }
+
+            ::-moz-color-swatch,
+            ::-moz-focus-inner{
+                border: 0;
+            }
+
+            ::-moz-focus-inner{
+                padding: 0;
+            }
+        </style>
+</head>
+<body>
+    <form>
+        <h1>Change the template to new Gradient</h1>
+        <div class="container">
+            <div class="left">
+                <h2>Template Code</h2>
+                <textarea id="template" onClick="this.focus();this.select()">Enter Template Code... 
+                </textarea>
+            </div>
+            <div class="middle">
+                <div class="gradientImages">
+                    <canvas id="gradientTop"></canvas>
+                    <canvas id="gradientMiddle"></canvas>
+                    <canvas id="gradientBottom"></canvas>
+                </div>
+                <div class="img_download_hide">
+                    <a id="img1"></a><a id="img2"></a><a id="img3"></a>
+                </div>
+            </div>
+            <div class="right">
+                <div class="color_box_container">
+                    <div class="swatch">
+                        <input class="startColor" type="color" name="color" value="#ffffff">
+                        <div class="info">
+                            <span class="title">Verlauf Start</span>
+                            <span class="subtitle">Color</span>
+                        </div>
+                    </div>
+                    <div class="swatch">
+                        <input class="endColor" type="color" name="color" value="#ffffff">
+                        <div class="info">
+                            <span class="title">Verlauf Ende</span>
+                            <span class="subtitle">Color</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- <label>
+                    Verlauf Start
+                    <input class="startColor" type="color" value="#FFFFFF">
+                </label>
+                <label>
+                    Verlauf Ende
+                    <input class="endColor" type="color" value="#FFFFFF">
+                </label> -->
+                <div class="gradient_container">
+                    <div class="gradient new">
+                        <div class="gradientText">
+                            <span>New Gradient</span>
+                        </div>
+                    </div>
+                    <div class="gradient old">
+                        <div class="gradientText">
+                            <span>Old Gradient</span>
+                            <span class="start"></span>
+                            <span class="middle"></span>
+                            <span class="end"></span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h2>Color Codes for Picture</h2>
+                    <div class="colors">
+                        <div class="row">
+                            <div>Start</div>
+                            <div>Middle</div>
+                            <div>End</div>
+                        </div>
+                        <div class="row">
+                            <div class="col1"><span class="col"></span><span class="txt">[]</span></div>
+                            <div class="col2"><span class="col"></span><span class="txt">[]</span></div>
+                            <div class="col3"><span class="col"></span><span class="txt">[]</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="button_container">
+                    <button type="submit" onClick=replaceColors(event)>
+                        1. Change Template
+                    </button>
+                    <button class="download">
+                        2. Download Images
+                    </button>
+                    <button class="copy" data-copy="#template">
+                        3. Copy Template to Clipboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script type="text/javascript">
+        var form = document.querySelector('form');
+        form.addEventListener('change', function() {
+            console.log('Form changed!');
+        });
+
+        let gradientPath = "https://s3-eu-west-1.amazonaws.com/files.crsend.com/20000/20377/images/Gradients/"
+        let imgT = Date.now() + "_top.jpg";
+        let imgM = Date.now() + "_middle.jpg";
+        let imgB = Date.now() + "_bottom.jpg";
+
+        let startColor = document.querySelector(".startColor");
+        let endColor = document.querySelector(".endColor");
+        let gradientOld = document.querySelector('.gradient.old')
+        let gradientNew = document.querySelector('.gradient.new')
+        let textarea = document.querySelector('textarea');
+
+        let picColText1 = document.querySelector('.col1 .txt');
+        let picCol1 = document.querySelector('.col1 .col');
+        let picColText2 = document.querySelector('.col2 .txt');
+        let picCol2 = document.querySelector('.col2 .col');
+        let picColText3 = document.querySelector('.col3 .txt');
+        let picCol3 = document.querySelector('.col3 .col');
+        let download = document.querySelector('.download')
+        let button = document.querySelector('button')
+        // Changing color for the gradient
+        console.log(startColor);
+
+        startColor.addEventListener("input", changeGradient);
+        endColor.addEventListener("input", changeGradient);
+        textarea.addEventListener("input", searchColors);
+        
+        download.addEventListener('click', function(e) {
+            e.preventDefault()
+            saveImages()
+        });
+
+        function saveImages() {
+            let img1_link = document.getElementById('img1')
+            let img2_link = document.getElementById('img2')
+            let img3_link = document.getElementById('img3')
+            img1_link.click();
+            img2_link.click();
+            img3_link.click();
+        }
+
+        function createGradientImg(colStart, colStop, el, height=428, which ,name) {
+            let canvas = document.getElementById(el);
+            //canvas.height = height;
+            //console.log(canvas.height)
+            let ctx = canvas.getContext('2d');
+            let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, colStart);
+            gradient.addColorStop(1, colStop);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+         
+            var link = document.getElementById(which);
+
+            link.setAttribute('download', name);
+            link.setAttribute('href', canvas.toDataURL("image/jpg").replace("image/jpg", "image/octet-stream"));
+            //link.click();
+            // var image = canvas.toDataURL("image/jpg").replace("image/jpg", "image/octet-stream"); 
+            // window.location.href=image; 
+        }
+       
+
+        let copybutton = document.querySelector("button[data-copy]");
+        copybutton.addEventListener('click', function(e) {
+        e.preventDefault();
+        let target = e.target;
+        let copytarget = target.dataset.copy;
+        let inp = (copytarget ? document.querySelector(copytarget) : null);
+        if (inp && inp.select) {
+            inp.select();
+            try {
+                document.execCommand('copy');
+                inp.blur();
+                alert("copied")
+            }
+            catch (err) {
+                document.querySelector(".msg").innerHTML = "Kopieren mit Ctrl/Cmd + C";
+            }
+        }
+        });
+
+        function rp_new (source, indic, color1, color2="#FFFFFF") {
+            let pos = source.indexOf(indic);
+            console.log(pos)
+            if(pos != -1) {
+                let rpString = source;
+                let posR = rpString.indexOf("background:linear-gradient(", pos)
+                let posC1 = rpString.indexOf('#', posR)
+                let posC2 = rpString.indexOf('#', posC1+1)
+                rpString = rpString.substring(0, posC1) + color1 + rpString.substring(posC1 + 7);
+                rpString = rpString.substring(0, posC2) + color2 + rpString.substring(posC2 + 7);
+
+                let posR_1 = rpString.indexOf('style="mso-width-percent:1000" fillcolor="', pos)
+                let posC1_1 = rpString.indexOf('#', posR_1)
+                rpString = rpString.substring(0, posC1_1) + color1 + rpString.substring(posC1_1 + 7);
+
+                let posR_2 = rpString.indexOf('<v:fill type="gradient" color2="', pos)
+                let posC2_2 = rpString.indexOf('#', posR_2)
+                rpString = rpString.substring(0, posC2_2) + color2 + rpString.substring(posC2_2 + 7);
+                
+                return rpString;
+            } else {
+                return source;
+            }
+        } 
+
+        function rp_bgImg(source, indic, imgPath) {
+            let pos = source.indexOf(indic);
+            console.log(pos)
+            if(pos != -1) {
+                let rpString = source;
+                //let posR = rpString.indexOf("url('", pos) + 5
+                let posC1 = rpString.indexOf("url('", pos) + 5
+                let posC2 = rpString.indexOf("');", posC1)
+                // console.log("where: ", posC1, posC2)
+                // console.log("before", rpString.substring(0, posC1))
+                // console.log("after", rpString.substring(posC2))
+                rpString = rpString.substring(0, posC1) + imgPath + rpString.substring(posC2);
+                
+                return rpString;
+            } else {
+                return source;
+            }
+        } 
+
+        function colorBetween(col1, col2, prc=0.7) {
+            var color1 = col1.replace("#", '');
+            var color2 = col2.replace("#", '');
+            var ratio = prc;
+            var hex = function(x) {
+                x = x.toString(16);
+                return (x.length == 1) ? '0' + x : x;
+            };
+            var r = Math.ceil(parseInt(color1.substring(0,2), 16) * ratio + parseInt(color2.substring(0,2), 16) * (1-ratio));
+            var g = Math.ceil(parseInt(color1.substring(2,4), 16) * ratio + parseInt(color2.substring(2,4), 16) * (1-ratio));
+            var b = Math.ceil(parseInt(color1.substring(4,6), 16) * ratio + parseInt(color2.substring(4,6), 16) * (1-ratio));
+
+            picCol1.style.background = col1;
+            picColText1.innerHTML = col1;
+            picCol2.style.background = "#"+hex(r) + hex(g) + hex(b);
+            picColText2.innerHTML = "#"+hex(r) + hex(g) + hex(b);
+            picCol3.style.background = col2;
+            picColText3.innerHTML = col2;
+
+            return "#"+hex(r) + hex(g) + hex(b);
+        }
+
+        function replaceColors(e) {
+            console.log("color replace")
+            e.preventDefault();
+            let nval = textarea.value;
+            // first part
+            nval = rp_new(nval, 'gradient_top', startColor.value, endColor.value)
+            nval = rp_new(nval, 'gradient_middle', colorBetween(startColor.value, endColor.value), endColor.value)
+            nval= rp_new(nval, 'gradient_bottom', startColor.value, colorBetween(startColor.value, endColor.value))
+            
+            nval = rp_bgImg(nval, 'gradient_top', gradientPath+imgT);
+            nval = rp_bgImg(nval, 'gradient_middle', gradientPath+imgM);
+            nval = rp_bgImg(nval, 'gradient_bottom', gradientPath+imgB);
+
+            console.log("changed")
+            textarea.value = nval
+
+            createGradientImg(startColor.value, endColor.value, 'gradientTop', 340, 'img1', imgT);
+            createGradientImg(endColor.value, colorBetween(startColor.value, endColor.value), 'gradientMiddle', 300,'img2', imgM);
+            createGradientImg(colorBetween(startColor.value, endColor.value),startColor.value, 'gradientBottom', 40,'img3', imgB);
+
+        }
+
+        function searchColors() {
+            let pos = textarea.value.indexOf('class="gradient_top"');
+            if(pos != -1 ) {
+                let colPos1 = textarea.value.indexOf('#', pos);
+                let colPos2 = textarea.value.indexOf('#', colPos1+1);
+                let col1 = textarea.value.substr(colPos1, 7);
+                let col2 = textarea.value.substr(colPos2, 7);
+                console.log("Current Gradient: " + col1 +" to " + col2)
+                gradientOld.style.background = "linear-gradient(to bottom, "+ col1 + ", "+ col2 +")";
+                document.querySelector('.gradient.old span').style.color = col1;
+                document.querySelector('.gradient .start').innerHTML=col1
+                document.querySelector('.gradient .middle').innerHTML=colorBetween(col1, col2)
+                document.querySelector('.gradient .end').innerHTML=col2
+
+                createGradientImg(col1, col2, 'gradientTop', 340, 'img1', imgT);
+                createGradientImg(col2, colorBetween(col1, col2), 'gradientMiddle', 300,'img2', imgM);
+                createGradientImg(colorBetween(col1, col2),col1, 'gradientBottom', 40,'img3', imgB);
+
+
+            }
+        }
+
+        function changeGradient() {
+            gradientNew.style.background =
+                "linear-gradient(to bottom, " 
+                    + startColor.value + ", " 
+                    + endColor.value + ")";
+            document.querySelector('.gradient.new span').style.color = startColor.value;
+        }
+    </script>
+</body>
+</html>
